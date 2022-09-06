@@ -46,7 +46,7 @@ function booksHandler(req, res){
         }
         else
         {
-            console.log(result);
+            //console.log(result);
             res.send(result);
         }
     })
