@@ -20,16 +20,19 @@ mongoose.connect('mongodb://tareq13:0000@ac-zforxfs-shard-00-00.3kuo6qm.mongodb.
 // mongoose.connect('mongodb://localhost:27017/booksApp', {useNewUrlParser: true, useUnifiedTopology: true});
 // mongodb+srv://tareq13:<password>@cluster0.3kuo6qm.mongodb.net/?retryWrites=true&w=majority 
 // mongodb://tareq13:<password>@ac-zforxfs-shard-00-00.3kuo6qm.mongodb.net:27017,ac-zforxfs-shard-00-01.3kuo6qm.mongodb.net:27017,ac-zforxfs-shard-00-02.3kuo6qm.mongodb.net:27017/?ssl=true&replicaSet=atlas-gzn9oq-shard-0&authSource=admin&retryWrites=true&w=majority
+
 //Routes Section 
 app.get('/', homeHandler);
 app.get('/getBooks', booksHandler);
 app.post('/addNewBook', addNewBookHandler);
 app.delete('/deleteBooks/:id', deleteBooksHandler);
+app.put('/updateBook/:id', updateBookHandler);
 app.get('/test', (request, response) => {
 
   response.send('test request received')
 
 })
+
 
 //Function Section
 // http:localhost:3888/
@@ -92,6 +95,22 @@ function deleteBooksHandler(req, res){
           }
       })
   })
+}
+// http://localhost:3888/updateBook:id
+function updateBookHandler(req,res) {
+    const id = req.params.id;
+    const {title, description,status} = req.body;
+    console.log(req.body);
+    BookModel.findByIdAndUpdate(id,{title, description,status},(err, result) => {
+        if(err) {
+            console.log(err);
+        }
+        else 
+        {
+            console.log(result);
+            res.send(result);
+        }
+    })
 }
 app.listen(PORT, () => {
   console.log(`Hello, this is PORT --> ${PORT}`);
